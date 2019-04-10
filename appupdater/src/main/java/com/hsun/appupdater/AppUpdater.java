@@ -31,7 +31,6 @@ public class AppUpdater {
     }
 
     public AppUpdater(final Activity activity) {
-
         this.activity = activity;
         this.requestRetryPolicy = new DefaultRetryPolicy(60 * 1000, 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -41,11 +40,14 @@ public class AppUpdater {
                 final UpdateDataModel updateDataModel = JsonUpdateData.parse(response);
                 if (updateDataModel.getVersionCode() > currentVersionCode ||
                         new Version(updateDataModel.getVersion()).compareTo(new Version(currentVersion.trim())) > 0) {
-                    AppUpdaterDialog.instance(activity, response.toString(), appUpdaterDialogSettings)
-                            .show();
+                    if (null != Config.sharedPreferences &&
+                            !Config.sharedPreferences.getBoolean(updateDataModel.getVersion() + updateDataModel.getVersionCode(), false)) {
+                        AppUpdaterDialog.instance(activity, response.toString(), appUpdaterDialogSettings).show();
+                    }
                 }
             }
         };
+        Config.sharedPreferences = activity.getSharedPreferences("AppUpdaterSP", Activity.MODE_PRIVATE);
     }
 
     public AppUpdater setDialogSettings(AppUpdaterDialogSettings appUpdaterDialogSettings) {

@@ -10,5 +10,5 @@
 
     <string name="dialog_header">Would you want to update version to ${version}?</string>
 
-    <string name="alert_write_permission">We need the authorization on your device.\n Change the setting at System Settings and try again.</string>
+    <string name="alert_write_permission">We need the authorization on your device.\nChange the setting at System Settings and try again.</string>
 </resources>

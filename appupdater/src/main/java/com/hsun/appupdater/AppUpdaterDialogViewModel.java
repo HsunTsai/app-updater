@@ -17,6 +17,7 @@ public class AppUpdaterDialogViewModel extends ViewModel {
     private Activity activity;
     private Listener listener;
     private UpdateDataModel updateDataModel;
+    private String versionSPKey;
     public final ObservableBoolean updateConstraint = new ObservableBoolean(false),
             btDownloadShow = new ObservableBoolean(false);
     public final ObservableField<String>
@@ -43,6 +44,7 @@ public class AppUpdaterDialogViewModel extends ViewModel {
         updateTitle.set(activity.getString(R.string.dialog_header).replace("${version}", updateDataModel.getVersion()));
         updateInformation.set(updateDataModel.getUpdateInformation());
         updateConstraint.set(updateDataModel.isConstraint());
+        versionSPKey = updateDataModel.getVersion() + updateDataModel.getVersionCode();
     }
 
     void setAppUpdaterDialogSettings(AppUpdaterDialogSettings appUpdaterDialogSettings) {
@@ -61,6 +63,13 @@ public class AppUpdaterDialogViewModel extends ViewModel {
         if (null != listener) listener.onClose();
     }
 
+    public void closeNotRemind(View view) {
+        if (null != Config.sharedPreferences && null != versionSPKey) {
+            Config.sharedPreferences.edit().putBoolean(versionSPKey, true).apply();
+        }
+        if (null != listener) listener.onClose();
+    }
+
     public void updateApp(View view) {
         updateGo();
     }
@@ -71,7 +80,6 @@ public class AppUpdaterDialogViewModel extends ViewModel {
         } else {
             if (null != listener) listener.onClose();
         }
-
 
         if (UtilPermission.getWriteExternalStorage(activity)) {
             String fileName = FileNameUtil.get(updateDataModel.getApkUrl());
