@@ -1,102 +1,131 @@
 package com.hsun.appupdater;
 
-
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.util.Log;
 
-public class AppUpdater extends DialogFragment implements View.OnClickListener {
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+public class AppUpdater {
 
     private Activity activity;
-    private UpdateDataModel updateDataModel;
+    private String updateURL, currentVersion;
+    private AppUpdaterDialogSettings appUpdaterDialogSettings;
+    private int currentVersionCode = -1;
 
-    private Button bt_update;
-    private ImageView img_update, bg_header, bg_logo;
+    /*Request Settings*/
+    private int requestMethod = Request.Method.GET;
+    private JSONObject requestBodyJson;
+    private DefaultRetryPolicy requestRetryPolicy;
+    private String requestBodyStr, cookie;
+    private Response.Listener<JSONObject> responseListener;
 
-    public AppUpdater() {
-
+    public enum RequestMethod {
+        GET,
+        POST
     }
 
-    public static AppUpdater instance(String updateData) {
-        AppUpdater fragment = new AppUpdater();
-        Bundle args = new Bundle();
-        args.putString("updateData", updateData);
-        fragment.setArguments(args);
-        return fragment;
+    public AppUpdater(final Activity activity) {
+
+        this.activity = activity;
+        this.requestRetryPolicy = new DefaultRetryPolicy(60 * 1000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        this.responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                final UpdateDataModel updateDataModel = JsonUpdateData.parse(response);
+                if (updateDataModel.getVersionCode() > currentVersionCode ||
+                        new Version(updateDataModel.getVersion()).compareTo(new Version(currentVersion.trim())) > 0) {
+                    AppUpdaterDialog.instance(activity, response.toString(), appUpdaterDialogSettings)
+                            .show();
+                }
+            }
+        };
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        activity = getActivity();
+    public AppUpdater setDialogSettings(AppUpdaterDialogSettings appUpdaterDialogSettings) {
+        this.appUpdaterDialogSettings = appUpdaterDialogSettings;
+        return this;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public AppUpdater setUpdateURL(String updateURL) {
+        this.updateURL = updateURL;
+        return this;
+    }
 
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (null != getDialog().getWindow())
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    public AppUpdater setRequestMethod(RequestMethod requestMethod) {
+        switch (requestMethod) {
+            case GET:
+                this.requestMethod = Request.Method.GET;
+                break;
+            case POST:
+                this.requestMethod = Request.Method.POST;
+                break;
+        }
+        return this;
+    }
 
-        View view = inflater.inflate(R.layout.app_updater_dialog, container);
+    public AppUpdater setRequestBody(JSONObject requestBody) {
+        this.requestBodyJson = requestBody;
+        return this;
+    }
 
-        if (getArguments() == null || null == getArguments().getString("updateData")) {
-            //Log.e("")
+    public AppUpdater setRequestBody(String requestBodyStr) {
+        this.requestBodyStr = requestBodyStr;
+        return this;
+    }
+
+    public AppUpdater setRequestRetryPolicy(DefaultRetryPolicy requestRetryPolicy) {
+        this.requestRetryPolicy = requestRetryPolicy;
+        return this;
+    }
+
+    public AppUpdater setRequestCookie(String cookie) {
+        this.cookie = cookie;
+        return this;
+    }
+
+    public AppUpdater setCurrentVersion(String version) {
+        this.currentVersion = version;
+        return this;
+    }
+
+    public AppUpdater setCurrentVersionCode(int versionCode) {
+        this.currentVersionCode = versionCode;
+        return this;
+    }
+
+    public void run() {
+        if (currentVersion.isEmpty() && currentVersionCode == -1) {
+            Log.e("appUpdater", "currentVersion or currentVersionCode should be set at least one");
+        } else if (updateURL.isEmpty()) {
+            Log.e("appUpdater", "updateURL should be set");
         } else {
-            updateDataModel = JsonUpdateData.parse(getArguments().getString("updateData"));
+            getUpdateData();
         }
-
-        ImageView img_logo = (ImageView) view.findViewById(R.id.img_logo);
-        AnimationUtil.setRotateInfinite(img_logo);
-        bt_update = (Button) view.findViewById(R.id.bt_update);
-        bt_update.setOnClickListener(this);
-        img_update = (ImageView) view.findViewById(R.id.img_update);
-        bg_logo = (ImageView) view.findViewById(R.id.bg_logo);
-        bg_header = (ImageView) view.findViewById(R.id.bg_header);
-
-        setThemeColor(getResources().getColor(R.color.colorPrimaryLight));
-
-        return view;
     }
 
-    public AppUpdater setThemeColor(int colorResource) {
-        ((GradientDrawable) bg_logo.getBackground()).setColor(colorResource);
-        ((GradientDrawable) bg_header.getBackground()).setColor(colorResource);
-        ((GradientDrawable) img_update.getBackground()).setColor(colorResource);
-        return this;
-    }
-
-    public AppUpdater setThemeColor(String themeColor) {
-        int color = getResources().getColor(R.color.colorPrimaryLight);
-        try {
-            color = Color.parseColor(themeColor);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void getUpdateData() {
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        CustomJsonObjectRequest jsonObjectRequest;
+        if (null != requestBodyJson) {
+            jsonObjectRequest = new CustomJsonObjectRequest(requestMethod, updateURL, requestBodyJson,
+                    responseListener, null);
+        } else if (null != requestBodyStr) {
+            jsonObjectRequest = new CustomJsonObjectRequest(requestMethod, updateURL, requestBodyStr,
+                    responseListener, null);
+        } else {
+            jsonObjectRequest = new CustomJsonObjectRequest(requestMethod, updateURL, "",
+                    responseListener, null);
         }
-        setThemeColor(color);
-        return this;
-    }
-
-    public AppUpdater setBtnUpdateText(String text) {
-        bt_update.setText(text);
-        return this;
-    }
-
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.bt_update) {
-            dismiss();
-        }
+        jsonObjectRequest.setRetryPolicy(requestRetryPolicy);
+        jsonObjectRequest.setShouldCache(false);
+        if (null != cookie) jsonObjectRequest.setCookie(cookie);
+        requestQueue.add(jsonObjectRequest);
     }
 }

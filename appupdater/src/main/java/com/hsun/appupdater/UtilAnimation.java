@@ -5,7 +5,7 @@ import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-public class AnimationUtil {
+public class UtilAnimation {
     static void setRotateInfinite(View view) {
         ObjectAnimator rotate = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
         rotate.setRepeatCount(ValueAnimator.INFINITE);

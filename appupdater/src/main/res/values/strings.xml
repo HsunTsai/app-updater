@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">appUpdater</string>
+
+    <string name="common_size">Size: </string>
+    <string name="common_release_time">Release time: </string>
+    <string name="common_update">Update</string>
+    <string name="common_download">Download App</string>
+    <string name="common_remind_me_next_time">Remind me next time</string>
+    <string name="common_remind_stop">Don\'t remind again at this version</string>
+
+    <string name="dialog_header">Would you want to update version to ${version}?</string>
+
+    <string name="alert_write_permission">We need the authorization on your device.\n Change the setting at System Settings and try again.</string>
 </resources>

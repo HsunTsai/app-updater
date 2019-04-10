@@ -1,13 +1,14 @@
 package com.hsun.updaterSample;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.hsun.appupdater.AppUpdater;
+import com.hsun.appupdater.AppUpdaterDialogSettings;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,15 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AppUpdater.instance("{}").show(getSupportFragmentManager(), "updater");
+                        AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
+                        appUpdaterDialogSettings.setShowDownload(true);
+                        new AppUpdater(MainActivity.this)
+                                .setRequestMethod(AppUpdater.RequestMethod.GET)
+                                .setUpdateURL("https://www.hsunserver.ga/download/updateData.json")
+                                .setCurrentVersion(BuildConfig.VERSION_NAME)
+                                .setCurrentVersionCode(BuildConfig.VERSION_CODE)
+                                .setDialogSettings(appUpdaterDialogSettings)
+                                .run();
                     }
                 });
     }

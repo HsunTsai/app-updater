@@ -1,87 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout>
 
-    <LinearLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.hsun.appupdater.AppUpdaterDialogViewModel" />
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/divider_transparent_height"
-        android:orientation="vertical"
-        android:showDividers="middle">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="130dp">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <include
-                layout="@layout/bg_header"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.hsun.appupdater.MyScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:overScrollMode="never">
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider_transparent_height"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:showDividers="middle">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/double_padding"
-                    android:paddingEnd="@dimen/double_padding">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txt_update_detail"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp">
+
+                        <include
+                            android:id="@+id/header_container"
+                            layout="@layout/bg_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="● 123
-● 4561234567890
-● 789234567890
-● 12334567890"
-                        android:textColor="@color/content_color" />
+                        android:background="@android:color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/double_padding"
+                            android:paddingEnd="@dimen/double_padding"
+                            android:text="@{viewModel.updateTitle}"
+                            android:textColor="@color/title_color"
+                            android:textSize="@dimen/title_font"
+                            android:visibility="@{viewModel.updateTitle.length()>0?View.VISIBLE:View.GONE}" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding"
+                            android:visibility="@{viewModel.updateInformation.length()>0?View.VISIBLE:View.GONE}">
+
+                            <com.hsun.appupdater.MyScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fadingEdge="none"
+                                android:fillViewport="true"
+                                android:overScrollMode="never">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/double_padding"
+                                    android:paddingEnd="@dimen/double_padding"
+                                    android:text="@{viewModel.updateInformation}"
+                                    android:textColor="@color/content_color" />
+
+                            </com.hsun.appupdater.MyScrollView>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </com.hsun.appupdater.MyScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:paddingStart="@dimen/double_padding"
+                    android:paddingEnd="@dimen/double_padding"
+                    android:text="@{viewModel.updateFooter}"
+                    android:textColor="@color/footer_color"
+                    android:visibility="@{viewModel.updateFooter.length()>0?View.VISIBLE:View.GONE}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_white_corner_bottom"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/double_padding"
+                    android:paddingEnd="@dimen/double_padding"
+                    android:paddingBottom="@dimen/double_padding">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_update"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/bt_normal" />
+
+                        <Button
+                            android:id="@+id/bt_update"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/bt_selector"
+                            android:onClick="@{(v)->viewModel.updateApp(v)}"
+                            android:text="@{viewModel.btUpdateText}"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white" />
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding"
+                        android:text="@string/common_remind_stop"
+                        android:textColor="@color/footer_color" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_padding"
+                        android:onClick="@{(v)->viewModel.downloadApp(v)}"
+                        android:text="@{viewModel.btDownloadText,default=@string/common_download}"
+                        android:textColor="@color/footer_color"
+                        android:visibility="@{viewModel.btDownloadShow?View.VISIBLE:View.GONE}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:layout_height="80dp"
+                    android:background="@android:color/white" />
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:background="@drawable/bt_circle_border_white_selector"
+                    android:onClick="@{(v)->viewModel.closeDialog(v)}"
+                    android:padding="@dimen/small_padding"
+                    android:src="@drawable/ic_close" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_white_corner_bottom"
-            android:paddingStart="@dimen/double_padding"
-            android:paddingEnd="@dimen/double_padding"
-            android:paddingBottom="@dimen/double_padding">
-
-            <ImageView
-                android:id="@+id/img_update"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/bt_normal" />
-
-            <Button
-                android:id="@+id/bt_update"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/bt_selector"
-                android:text="click"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white" />
-
-        </RelativeLayout>
-
     </LinearLayout>
 
-</LinearLayout>
+</layout>
