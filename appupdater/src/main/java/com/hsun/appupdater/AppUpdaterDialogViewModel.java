@@ -106,6 +106,7 @@ public class AppUpdaterDialogViewModel extends ViewModel {
                         @Override
                         public void onError() {
                             downloadState.set(DownloadState.ERROR);
+                            if (downloadFile.exists()) downloadFile.delete();
                             UtilLog.show("download", "failed");
                         }
                     })

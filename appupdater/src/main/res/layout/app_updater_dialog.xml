@@ -177,7 +177,7 @@
                                 android:paddingStart="@dimen/padding"
                                 android:paddingEnd="@dimen/padding"
                                 android:text="@{String.valueOf(viewModel.downloadProgress)+` %`,default=`100%`}"
-                                android:textColor="@color/footer_color" />
+                                android:textColor="@{viewModel.downloadState==DownloadState.ERROR?@color/error:@color/footer_color}" />
 
                         </LinearLayout>
 
@@ -199,14 +199,37 @@
                         android:textColor="@color/footer_color"
                         android:visibility="@{viewModel.updateConstraint?View.GONE:View.VISIBLE}" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_padding"
-                        android:onClick="@{(v)->viewModel.downloadApp(v)}"
-                        android:text="@{viewModel.btDownloadText,default=@string/common_download}"
-                        android:textColor="@{viewModel.downloadState!=DownloadState.ERROR?@color/footer_color:@color/error}"
-                        android:visibility="@{viewModel.downloadState==DownloadState.UN_INITIAL?View.GONE:(viewModel.btDownloadShow?View.VISIBLE:View.GONE)}" />
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/padding"
+                            android:text="👉"
+                            android:visibility="@{viewModel.downloadState==DownloadState.ERROR?View.VISIBLE:View.GONE}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(v)->viewModel.downloadApp(v)}"
+                            android:text="@{viewModel.btDownloadText,default=@string/common_download}"
+                            android:textColor="@{viewModel.downloadState==DownloadState.ERROR?@color/title_color:@color/footer_color}"
+                            android:visibility="@{viewModel.downloadState==DownloadState.UN_INITIAL?View.GONE:(viewModel.btDownloadShow?View.VISIBLE:View.GONE)}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding"
+                            android:layout_marginRight="@dimen/padding"
+                            android:text="👈"
+                            android:visibility="@{viewModel.downloadState==DownloadState.ERROR?View.VISIBLE:View.GONE}" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
