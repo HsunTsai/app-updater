@@ -1,4 +1,4 @@
-# App Updater
+# Android App Updater
 
 ## Demo Image
 
