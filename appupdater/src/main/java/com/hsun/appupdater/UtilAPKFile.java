@@ -3,20 +3,25 @@ package com.hsun.appupdater;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FileNameUtil {
-    static String get(String url) {
+/**
+ * Power by https://stackoverflow.com/questions/11575943/parse-file-name-from-url-before-downloading-the-file
+ */
+
+public class UtilAPKFile {
+    static String getFullNameFromURL(String url, String version, int versionCode) {
+        String initName = "latestApp_" + version + "_" + versionCode + ".apk";
         if (url == null) {
-            return "";
+            return initName;
         }
         try {
             URL resource = new URL(url);
             String host = resource.getHost();
             if (host.length() > 0 && url.endsWith(host)) {
                 // handle ...example.com
-                return "";
+                return initName;
             }
         } catch (MalformedURLException e) {
-            return "";
+            return initName;
         }
 
         int startIndex = url.lastIndexOf('/') + 1;
@@ -36,6 +41,14 @@ public class FileNameUtil {
 
         // calculate the end index
         int endIndex = Math.min(lastQMPos, lastHashPos);
-        return url.substring(startIndex, endIndex);
+        initName = url.substring(startIndex, endIndex);
+        if (initName.contains(version) && initName.contains(String.valueOf(versionCode))) {
+            return initName;
+        } else if (initName.contains(".")) {
+            initName = initName.substring(0, initName.indexOf(".")) + "_" + version + "_" + versionCode + initName.substring(initName.indexOf("."));
+        } else {
+            initName = version + "_" + versionCode + ".apk";
+        }
+        return initName;
     }
 }

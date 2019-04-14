@@ -7,8 +7,10 @@
     <string name="common_download">Download App</string>
     <string name="common_remind_me_next_time">Remind me next time</string>
     <string name="common_remind_stop">Don\'t remind again at this version</string>
+    <string name="common_start_download">File start download</string>
 
     <string name="dialog_header">Would you want to update version to ${version}?</string>
 
     <string name="alert_write_permission">We need the authorization on your device.\nChange the setting at System Settings and try again.</string>
+    <string name="alert_download_error">Download error !\nPlease click \"Download App\"</string>
 </resources>

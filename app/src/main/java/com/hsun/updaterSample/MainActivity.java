@@ -22,10 +22,9 @@ public class MainActivity extends Activity {
                         AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
                         appUpdaterDialogSettings.setShowDownload(true);
                         new AppUpdater(MainActivity.this)
-                                .setRequestMethod(AppUpdater.RequestMethod.GET)
-                                .setUpdateURL("https://www.hsunserver.ga/download/updateData.json")
-                                .setCurrentVersion(BuildConfig.VERSION_NAME)
-                                .setCurrentVersionCode(BuildConfig.VERSION_CODE)
+                                .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
+                                .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+                                .setLogShow(true)
                                 .setDialogSettings(appUpdaterDialogSettings)
                                 .run();
                     }

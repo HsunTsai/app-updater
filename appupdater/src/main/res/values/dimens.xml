@@ -3,6 +3,7 @@
     <dimen name="small_padding">2dp</dimen>
     <dimen name="padding">6dp</dimen>
     <dimen name="double_padding">12dp</dimen>
+    <dimen name="gap">16dp</dimen>
     <dimen name="icon_size">24dp</dimen>
 
     <dimen name="title_font">14sp</dimen>

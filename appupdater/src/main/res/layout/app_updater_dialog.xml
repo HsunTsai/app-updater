@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <import type="android.view.View" />
+
+        <import type="com.hsun.appupdater.AppUpdaterDialogViewModel.DownloadState" />
 
         <variable
             name="viewModel"
@@ -11,7 +13,7 @@
 
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -132,6 +134,7 @@
                             android:layout_height="40dp"
                             android:layout_centerVertical="true"
                             android:background="@drawable/bt_selector"
+                            android:enabled="@{viewModel.downloadState==DownloadState.UN_INITIAL||viewModel.downloadState==DownloadState.FINISH}"
                             android:onClick="@{(v)->viewModel.updateApp(v)}"
                             android:text="@{viewModel.btUpdateText}"
                             android:textAllCaps="false"
@@ -139,6 +142,53 @@
 
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/padding"
+                        android:paddingTop="@dimen/padding"
+                        android:paddingEnd="@dimen/padding"
+                        android:visibility="@{viewModel.downloadState!=DownloadState.UN_INITIAL?View.VISIBLE:View.GONE}">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/gap"
+                            android:layout_marginEnd="@dimen/gap"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="@{viewModel.downloadProgress}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:minWidth="48dp"
+                                android:paddingStart="@dimen/padding"
+                                android:paddingEnd="@dimen/padding"
+                                android:text="@{String.valueOf(viewModel.downloadProgress)+` %`,default=`100%`}"
+                                android:textColor="@color/footer_color" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/alert_download_error"
+                            android:textColor="@color/error"
+                            android:visibility="@{viewModel.downloadState==DownloadState.ERROR?View.VISIBLE:View.GONE}" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,7 +196,8 @@
                         android:layout_marginTop="@dimen/padding"
                         android:onClick="@{(v)->viewModel.closeNotRemind(v)}"
                         android:text="@string/common_remind_stop"
-                        android:textColor="@color/footer_color" />
+                        android:textColor="@color/footer_color"
+                        android:visibility="@{viewModel.updateConstraint?View.GONE:View.VISIBLE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -154,8 +205,8 @@
                         android:layout_marginTop="@dimen/small_padding"
                         android:onClick="@{(v)->viewModel.downloadApp(v)}"
                         android:text="@{viewModel.btDownloadText,default=@string/common_download}"
-                        android:textColor="@color/footer_color"
-                        android:visibility="@{viewModel.btDownloadShow?View.VISIBLE:View.GONE}" />
+                        android:textColor="@{viewModel.downloadState!=DownloadState.ERROR?@color/footer_color:@color/error}"
+                        android:visibility="@{viewModel.downloadState==DownloadState.UN_INITIAL?View.GONE:(viewModel.btDownloadShow?View.VISIBLE:View.GONE)}" />
 
                 </LinearLayout>
 
@@ -165,7 +216,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{viewModel.updateConstraint?View.GONE:View.VISIBLE}">
 
                 <LinearLayout
                     android:layout_width="1dp"

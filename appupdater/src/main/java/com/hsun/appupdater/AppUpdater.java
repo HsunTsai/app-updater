@@ -56,12 +56,13 @@ public class AppUpdater {
         return this;
     }
 
-    public AppUpdater setUpdateURL(String updateURL) {
-        this.updateURL = updateURL;
+    public AppUpdater setUpdateParam(String updateURL) {
+        setUpdateParam(updateURL, RequestMethod.GET);
         return this;
     }
 
-    public AppUpdater setRequestMethod(RequestMethod requestMethod) {
+    public AppUpdater setUpdateParam(String updateURL, RequestMethod requestMethod) {
+        this.updateURL = updateURL;
         switch (requestMethod) {
             case GET:
                 this.requestMethod = Request.Method.GET;
@@ -73,12 +74,30 @@ public class AppUpdater {
         return this;
     }
 
-    public AppUpdater setRequestBody(JSONObject requestBody) {
+    public AppUpdater setUpdateParam(String updateURL, RequestMethod requestMethod, JSONObject requestBody) {
+        this.updateURL = updateURL;
+        switch (requestMethod) {
+            case GET:
+                this.requestMethod = Request.Method.GET;
+                break;
+            case POST:
+                this.requestMethod = Request.Method.POST;
+                break;
+        }
         this.requestBodyJson = requestBody;
         return this;
     }
 
-    public AppUpdater setRequestBody(String requestBodyStr) {
+    public AppUpdater setUpdateParam(String updateURL, RequestMethod requestMethod, String requestBodyStr) {
+        this.updateURL = updateURL;
+        switch (requestMethod) {
+            case GET:
+                this.requestMethod = Request.Method.GET;
+                break;
+            case POST:
+                this.requestMethod = Request.Method.POST;
+                break;
+        }
         this.requestBodyStr = requestBodyStr;
         return this;
     }
@@ -93,13 +112,14 @@ public class AppUpdater {
         return this;
     }
 
-    public AppUpdater setCurrentVersion(String version) {
+    public AppUpdater setVersion(String version, int versionCode) {
         this.currentVersion = version;
+        this.currentVersionCode = versionCode;
         return this;
     }
 
-    public AppUpdater setCurrentVersionCode(int versionCode) {
-        this.currentVersionCode = versionCode;
+    public AppUpdater setLogShow(boolean showLog) {
+        Config.showLog = showLog;
         return this;
     }
 

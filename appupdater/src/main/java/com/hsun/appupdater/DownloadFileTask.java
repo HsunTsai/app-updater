@@ -1,7 +1,6 @@
 package com.hsun.appupdater;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -39,8 +38,8 @@ class DownloadFileTask extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         int count;
         try {
-            Log.i("Url", params[0]);
-            Log.i("download_path", params[1]);
+            UtilLog.show("Url", params[0]);
+            UtilLog.show("download_path", params[1]);
             URL url = new URL(params[0]);
             URLConnection conection = url.openConnection();
             conection.connect();
