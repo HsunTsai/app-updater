@@ -37,6 +37,7 @@ public class AppUpdater {
         this.responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                //將返回的資料做比對 若目前APP小於線上版本 就進行Dialog的產生
                 final UpdateDataModel updateDataModel = JsonUpdateData.parse(response);
                 if (updateDataModel.getVersionCode() > currentVersionCode ||
                         new Version(updateDataModel.getVersion()).compareTo(new Version(currentVersion.trim())) > 0) {
