@@ -77,6 +77,8 @@ public void checkVersion(){
 
     new AppUpdater(MainActivity.this)
         .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
+        //.setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.GET)
+        //.setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.POST, data)
         .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
         .setLogShow(true)
         .setDialogSettings(appUpdaterDialogSettings)
