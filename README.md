@@ -25,18 +25,20 @@ dependencies {
 }
 ```
 
-### (2) AndroidManiferst.xml
-```xml
-Add permission
 
+### (2) AndroidManiferst.xml
+
+#### Add permission
+
+```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 ```
 
-```xml
-Add uses-library & provider in your <application>
+#### Add uses-library & provider in your <application>
 
+```xml
 <uses-library
       android:name="org.apache.http.legacy"
       android:required="false" />
@@ -52,10 +54,10 @@ Add uses-library & provider in your <application>
 ```
 
 ### (3) Your backend server
-```json
-You need a backend server(API) to tell the version number that the application wants to upgrade.
 
-The JSON format like => 
+#### You need a backend server(API) to tell the version number that the application wants to upgrade.
+#### The JSON format like => 
+```json
 {
     "version": "1.0.1",
     "versionCode": "2",
