@@ -9,7 +9,7 @@
 ## Setup
 
 ### (1) Gradle (This lib use dataBinding, Plz add dataBinding enabled = true)
-```
+```groovy
 android {
     ...
     repositories {
@@ -26,7 +26,7 @@ dependencies {
 ```
 
 ### (2) AndroidManiferst.xml
-```
+```xml
 Add permission
 
 <uses-permission android:name="android.permission.INTERNET" />
@@ -34,7 +34,7 @@ Add permission
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 ```
 
-```
+```xml
 Add uses-library & provider in your <application>
 
 <uses-library
@@ -52,7 +52,7 @@ Add uses-library & provider in your <application>
 ```
 
 ### (3) Your backend server
-```
+```json
 You need a backend server(API) to tell the version number that the application wants to upgrade.
 
 The JSON format like => 
@@ -67,8 +67,8 @@ The JSON format like =>
 }
 ```
 
-### (4) Your java code
-```
+### (4) Usage
+```java
 AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
 appUpdaterDialogSettings.setShowDownload(true);
 new AppUpdater(MainActivity.this)
