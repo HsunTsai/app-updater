@@ -20,7 +20,9 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
-                        appUpdaterDialogSettings.setShowDownload(true);
+                        appUpdaterDialogSettings
+                                .setDownloadText("open browser to download APK")
+                                .setUpdateText("Upgrade");
                         new AppUpdater(MainActivity.this)
                                 .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
                                 .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
