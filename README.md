@@ -8,7 +8,7 @@
 
 ## Setup
 
-### (1) Gradle (!!This lib use databind, Plz add dataBinding enabled = true)
+### (1) Gradle (This lib use dataBinding, Plz add dataBinding enabled = true)
 ```
 android {
     ...
