@@ -69,14 +69,19 @@ The JSON format like =>
 
 ### (4) Usage
 ```java
-AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
-appUpdaterDialogSettings.setShowDownload(true);
-new AppUpdater(MainActivity.this)
-    .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
-    .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
-    .setLogShow(true)
-    .setDialogSettings(appUpdaterDialogSettings)
-    .run();
+public void checkVersion(){
+    AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
+    appUpdaterDialogSettings
+        .setDownloadText("open browser to download APK")
+        .setUpdateText("Upgrade");
+
+    new AppUpdater(MainActivity.this)
+        .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
+        .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        .setLogShow(true)
+        .setDialogSettings(appUpdaterDialogSettings)
+        .run();
+}
 ```
 
 ## Pattern
