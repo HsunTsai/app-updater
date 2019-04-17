@@ -6,6 +6,33 @@
 | ------------- | ------------- | ------------- | ------------- |
 | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo.gif" title="Live Demo" width="200" height="300" /></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_2.png" title="Download APK" width="200" height="300"/></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_3.png" title="Install" width="200" height="300"/></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_4.png" title="Dwonload Error" width="200" height="300"/></kbd>  |
 
+## Test Pass
+### Virtual
+| Device | Adroid API | Type |
+| ------------- | ------------- | ------------- |
+| Nokia 7+ | 28 | Real |
+| Samsung Galaxy S8 | 28 | Real |
+| Samsung Galaxy S9+ | 26 | Real |
+| Xperia XZ1 Compact | 26 | Real |
+| Huawei Mate 9| 24 | Real |
+| LG G6 | 24 | Real |
+| Xiaomi Mix2 | 26 | Real |
+| ASUS Zenfone 5 | 20 | Real |
+
+### Real
+| Device | Adroid API | Type |
+| ------------- | ------------- | ------------- |
+| Pixel 2 | 26 | Virtual |
+| Pixel 2 | 28 | Virtual |
+| Nexus 4 | 22 | Virtual |
+| Nexus 5 | 19 | Virtual |
+| Nexus 5X | 25 | Virtual 
+| Nexus 6 | 24 | Virtual |
+| Nexus 6P | 27 | Virtual |
+| Nexus 7 (2012) | 22 | Virtual |
+| Nexus 9 | 25 | Virtual |
+| Nexus 10 | 22 | Virtual |
+
 ## Setup
 
 ### (1) Gradle (This lib use dataBinding, Plz add dataBinding enabled = true)
