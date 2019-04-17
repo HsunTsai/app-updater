@@ -7,7 +7,7 @@
 | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo.gif" title="Live Demo" width="200" height="300" /></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_2.png" title="Download APK" width="200" height="300"/></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_3.png" title="Install" width="200" height="300"/></kbd>  | <kbd><img src="http://www.hsunapi.ga/images/AppUpdaterDemo_4.png" title="Dwonload Error" width="200" height="300"/></kbd>  |
 
 ## Test Pass
-### Virtual
+### Real Machine
 | Device | Adroid API | Type |
 | ------------- | ------------- | ------------- |
 | Nokia 7+ | 28 | Real |
@@ -19,7 +19,7 @@
 | Xiaomi Mix2 | 26 | Real |
 | ASUS Zenfone 5 | 20 | Real |
 
-### Real
+### Virtual Machine
 | Device | Adroid API | Type |
 | ------------- | ------------- | ------------- |
 | Pixel 2 | 26 | Virtual |
