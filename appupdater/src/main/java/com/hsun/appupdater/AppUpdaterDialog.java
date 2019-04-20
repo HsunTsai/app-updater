@@ -33,6 +33,7 @@ public class AppUpdaterDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("updateData", updateData);
         args.putString("appUpdaterDialogSettings", appUpdaterDialogSettings.toJson());
+        數字文字布林用extra view用其他種類使用static
         fragment.setArguments(args);
         AppUpdaterDialog.activity = activity;
         return fragment;
@@ -54,7 +55,7 @@ public class AppUpdaterDialog extends DialogFragment {
 
         appUpdaterDialogBinding =
                 DataBindingUtil.inflate(inflater, R.layout.app_updater_dialog, container, false);
-        appUpdaterDialogViewModel = new AppUpdaterDialogViewModel(activity);
+        appUpdaterDialogViewModel = new AppUpdaterDialogViewModel(activity, appUpdaterDialogBinding);
         appUpdaterDialogViewModel.setListener(new AppUpdaterDialogViewModel.Listener() {
             @Override
             public void onClose() {
@@ -62,42 +63,18 @@ public class AppUpdaterDialog extends DialogFragment {
             }
         });
         appUpdaterDialogViewModel.setUpdateData(JsonUpdateData.parse(getArguments().getString("updateData")));
-        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(new AppUpdaterDialogSettings().parse(getArguments().getString("appUpdaterDialogSettings")));
         appUpdaterDialogBinding.setViewModel(appUpdaterDialogViewModel);
+        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(new AppUpdaterDialogSettings()
+                .parse(getArguments().getString("appUpdaterDialogSettings")));
 
         UtilAnimation.setRotateInfinite(appUpdaterDialogBinding.headerContainer.imgLogo);
 
-        setThemeColor(getResources().getColor(R.color.colorPrimaryLight));
         setCancelable(false);
 
         return appUpdaterDialogBinding.getRoot();
-    }
-
-    AppUpdaterDialog setThemeColor(int colorResource) {
-        if (null != appUpdaterDialogBinding) {
-            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgLogo.getBackground()).setColor(colorResource);
-            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgHeader.getBackground()).setColor(colorResource);
-            ((GradientDrawable) appUpdaterDialogBinding.imgUpdate.getBackground()).setColor(colorResource);
-            LayerDrawable progressBarDrawable = (LayerDrawable) appUpdaterDialogBinding.progressBar.getProgressDrawable();
-            progressBarDrawable.setColorFilter(colorResource, PorterDuff.Mode.SRC_IN);
-        }
-        return this;
-    }
-
-    AppUpdaterDialog setThemeColor(String themeColor) {
-        int color = getResources().getColor(R.color.colorPrimaryLight);
-        try {
-            color = Color.parseColor(themeColor);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        setThemeColor(color);
-        return this;
     }
 
     public void show() {
         show(activity.getFragmentManager(), "appUpdater");
     }
 }
-
-//            setThemeColor(activity.getResources().getColor(R.color.colorPrimaryLight));

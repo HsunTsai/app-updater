@@ -21,10 +21,15 @@ public class MainActivity extends Activity {
                     public void onClick(View view) {
                         AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
                         appUpdaterDialogSettings
-                                .setDownloadText("open browser to download APK")
-                                .setUpdateText("Upgrade");
+                                .setDownloadTextResource(R.string.hint_open_browser)
+                                .setUpdateTextResource(R.string.common_update)
+                                .setDialogThemeColor("#0087dc")
+                                .setHeaderLayoutResource(R.layout.updater);
                         new AppUpdater(MainActivity.this)
                                 .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
+//                                .setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.GET)
+//                                .setUpdateParam("https://www.hsunserver.ga/download/updateData.json",
+//                                        AppUpdater.RequestMethod.POST, data)
                                 .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
                                 .setLogShow(true)
                                 .setDialogSettings(appUpdaterDialogSettings)

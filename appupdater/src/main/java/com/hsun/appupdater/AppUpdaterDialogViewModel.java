@@ -8,12 +8,19 @@ import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Toast;
+
+import com.hsun.appupdater.databinding.AppUpdaterDialogBinding;
 
 import java.io.File;
 
@@ -22,6 +29,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class AppUpdaterDialogViewModel extends ViewModel {
 
     private Activity activity;
+    private AppUpdaterDialogBinding appUpdaterDialogBinding;
     private Listener listener;
     private UpdateDataModel updateDataModel;
     private String versionSPKey, appFileName;
@@ -44,8 +52,9 @@ public class AppUpdaterDialogViewModel extends ViewModel {
         ERROR
     }
 
-    AppUpdaterDialogViewModel(Activity activity) {
+    AppUpdaterDialogViewModel(Activity activity, AppUpdaterDialogBinding appUpdaterDialogBinding) {
         this.activity = activity;
+        this.appUpdaterDialogBinding = appUpdaterDialogBinding;
     }
 
     public interface Listener {
@@ -68,11 +77,40 @@ public class AppUpdaterDialogViewModel extends ViewModel {
     }
 
     void setAppUpdaterDialogSettings(AppUpdaterDialogSettings appUpdaterDialogSettings) {
-        btUpdateText.set(null == appUpdaterDialogSettings.getUpdateText() ?
-                activity.getString(R.string.common_update) : appUpdaterDialogSettings.getUpdateText());
-        btDownloadText.set(null == appUpdaterDialogSettings.getDownloadText() ?
-                activity.getString(R.string.common_download) : appUpdaterDialogSettings.getDownloadText());
+        btUpdateText.set(activity.getString(appUpdaterDialogSettings.getUpdateTextResource()));
+        btDownloadText.set(activity.getString(appUpdaterDialogSettings.getDownloadTextResource()));
         btDownloadShow.set(appUpdaterDialogSettings.isShowDownload());
+        setThemeColor(appUpdaterDialogSettings.getDialogThemeColor());
+        if (appUpdaterDialogSettings.getHeaderLayoutResource() != 0) {
+            if (null != appUpdaterDialogBinding.layoutStub.getViewStub())
+                appUpdaterDialogBinding.layoutStub.getViewStub().setLayoutInflater().setLayoutResource(appUpdaterDialogSettings.getHeaderLayoutResource());
+            appUpdaterDialogBinding.headerContainer.defaultBgHeader.setVisibility(View.GONE);
+        } else {
+            if (null != appUpdaterDialogBinding.layoutStub.getViewStub())
+                appUpdaterDialogBinding.layoutStub.getViewStub().setVisibility(View.GONE);
+            appUpdaterDialogBinding.headerContainer.defaultBgHeader.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    void setThemeColor(String themeColor) {
+        int color = activity.getResources().getColor(R.color.colorPrimaryLight);
+        try {
+            color = Color.parseColor(themeColor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setThemeColor(color);
+    }
+
+    void setThemeColor(int colorResource) {
+        if (null != appUpdaterDialogBinding) {
+            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgLogo.getBackground()).setColor(colorResource);
+            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgHeader.getBackground()).setColor(colorResource);
+            ((GradientDrawable) appUpdaterDialogBinding.imgUpdate.getBackground()).setColor(colorResource);
+            LayerDrawable progressBarDrawable = (LayerDrawable) appUpdaterDialogBinding.progressBar.getProgressDrawable();
+            progressBarDrawable.setColorFilter(colorResource, PorterDuff.Mode.SRC_IN);
+        }
     }
 
     private void downloadRUN() {
