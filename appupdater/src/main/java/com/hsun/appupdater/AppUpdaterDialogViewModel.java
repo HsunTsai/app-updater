@@ -17,7 +17,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.view.ViewStub;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hsun.appupdater.databinding.AppUpdaterDialogBinding;
@@ -67,8 +67,7 @@ public class AppUpdaterDialogViewModel extends ViewModel {
 
     void setUpdateData(UpdateDataModel updateDataModel) {
         this.updateDataModel = updateDataModel;
-        updateTitle.set(activity.getString(R.string.dialog_header)
-                .replace("${version}", updateDataModel.getVersion()));
+
         updateInformation.set(updateDataModel.getUpdateInformation());
         updateConstraint.set(updateDataModel.isConstraint());
         versionSPKey = updateDataModel.getVersion() + updateDataModel.getVersionCode();
@@ -77,20 +76,26 @@ public class AppUpdaterDialogViewModel extends ViewModel {
     }
 
     void setAppUpdaterDialogSettings(AppUpdaterDialogSettings appUpdaterDialogSettings) {
-        btUpdateText.set(activity.getString(appUpdaterDialogSettings.getUpdateTextResource()));
-        btDownloadText.set(activity.getString(appUpdaterDialogSettings.getDownloadTextResource()));
+        if (appUpdaterDialogSettings.getUpdateInfoTextResource() != 0)
+            updateTitle.set(activity.getString(appUpdaterDialogSettings.getUpdateInfoTextResource()).replace("${version}", updateDataModel.getVersion()));
+        if (appUpdaterDialogSettings.getUpdateBtnTextResource() != 0)
+            btUpdateText.set(activity.getString(appUpdaterDialogSettings.getUpdateBtnTextResource()));
+        if (appUpdaterDialogSettings.getDownloadBtnTextResource() != 0)
+            btDownloadText.set(activity.getString(appUpdaterDialogSettings.getDownloadBtnTextResource()));
         btDownloadShow.set(appUpdaterDialogSettings.isShowDownload());
         setThemeColor(appUpdaterDialogSettings.getDialogThemeColor());
-        if (appUpdaterDialogSettings.getHeaderLayoutResource() != 0) {
-            if (null != appUpdaterDialogBinding.layoutStub.getViewStub())
-                appUpdaterDialogBinding.layoutStub.getViewStub().setLayoutInflater().setLayoutResource(appUpdaterDialogSettings.getHeaderLayoutResource());
+        if (null != appUpdaterDialogSettings.getCustomHeaderView()) {
+            if (appUpdaterDialogSettings.getCustomHeaderView().getParent() != null) {
+                ((ViewGroup) appUpdaterDialogSettings.getCustomHeaderView().getParent())
+                        .removeView(appUpdaterDialogSettings.getCustomHeaderView());
+            }
+            appUpdaterDialogBinding.customHeader.removeView(appUpdaterDialogSettings.getCustomHeaderView());
+            appUpdaterDialogBinding.customHeader.addView(appUpdaterDialogSettings.getCustomHeaderView());
             appUpdaterDialogBinding.headerContainer.defaultBgHeader.setVisibility(View.GONE);
         } else {
-            if (null != appUpdaterDialogBinding.layoutStub.getViewStub())
-                appUpdaterDialogBinding.layoutStub.getViewStub().setVisibility(View.GONE);
+            appUpdaterDialogBinding.customHeader.setVisibility(View.GONE);
             appUpdaterDialogBinding.headerContainer.defaultBgHeader.setVisibility(View.VISIBLE);
         }
-
     }
 
     void setThemeColor(String themeColor) {

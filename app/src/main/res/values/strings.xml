@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AppUpdater</string>
     <string name="hint_open_browser">open browser to download APK</string>
+    <string name="update_info_text">Hey upgrade app to ${version} !!!</string>
 </resources>

@@ -22,6 +22,7 @@ public class AppUpdaterDialog extends DialogFragment {
     private static Activity activity;
     private AppUpdaterDialogBinding appUpdaterDialogBinding;
     private AppUpdaterDialogViewModel appUpdaterDialogViewModel;
+    private static View customHeaderView;
 
     public AppUpdaterDialog() {
 
@@ -33,7 +34,7 @@ public class AppUpdaterDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("updateData", updateData);
         args.putString("appUpdaterDialogSettings", appUpdaterDialogSettings.toJson());
-        數字文字布林用extra view用其他種類使用static
+        customHeaderView = appUpdaterDialogSettings.getCustomHeaderView();
         fragment.setArguments(args);
         AppUpdaterDialog.activity = activity;
         return fragment;
@@ -64,8 +65,10 @@ public class AppUpdaterDialog extends DialogFragment {
         });
         appUpdaterDialogViewModel.setUpdateData(JsonUpdateData.parse(getArguments().getString("updateData")));
         appUpdaterDialogBinding.setViewModel(appUpdaterDialogViewModel);
-        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(new AppUpdaterDialogSettings()
-                .parse(getArguments().getString("appUpdaterDialogSettings")));
+        AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings()
+                .parse(getArguments().getString("appUpdaterDialogSettings"))
+                .setCustomHeaderView(customHeaderView);
+        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(appUpdaterDialogSettings);
 
         UtilAnimation.setRotateInfinite(appUpdaterDialogBinding.headerContainer.imgLogo);
 

@@ -21,10 +21,11 @@ public class MainActivity extends Activity {
                     public void onClick(View view) {
                         AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
                         appUpdaterDialogSettings
-                                .setDownloadTextResource(R.string.hint_open_browser)
-                                .setUpdateTextResource(R.string.common_update)
-                                .setDialogThemeColor("#0087dc")
-                                .setHeaderLayoutResource(R.layout.updater);
+                                .setUpdateInfoTextResource(R.string.update_info_text) //setUpdateInfoTextResource will replact ${version} to your version
+                                .setDownloadBtnTextResource(R.string.hint_open_browser)
+                                .setUpdateBtnTextResource(R.string.common_update)
+                                .setDialogThemeColor("#0087DC");
+                                //.setCustomHeaderView(getLayoutInflater().inflate(R.layout.custom_updater_dialog_header, null));
                         new AppUpdater(MainActivity.this)
                                 .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
 //                                .setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.GET)

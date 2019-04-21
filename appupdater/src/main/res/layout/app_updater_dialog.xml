@@ -40,16 +40,16 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="130dp">
+                        android:layout_height="wrap_content">
 
                         <include
                             android:id="@+id/header_container"
                             layout="@layout/bg_header"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="130dp" />
 
-                        <ViewStub
-                            android:id="@+id/layout_stub"
+                        <RelativeLayout
+                            android:id="@+id/customHeader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
