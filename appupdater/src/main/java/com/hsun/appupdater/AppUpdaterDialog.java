@@ -22,6 +22,7 @@ public class AppUpdaterDialog extends DialogFragment {
     private static Activity activity;
     private AppUpdaterDialogBinding appUpdaterDialogBinding;
     private AppUpdaterDialogViewModel appUpdaterDialogViewModel;
+    private static View customHeaderView;
 
     public AppUpdaterDialog() {
 
@@ -33,6 +34,7 @@ public class AppUpdaterDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("updateData", updateData);
         args.putString("appUpdaterDialogSettings", appUpdaterDialogSettings.toJson());
+        customHeaderView = appUpdaterDialogSettings.getCustomHeaderView();
         fragment.setArguments(args);
         AppUpdaterDialog.activity = activity;
         return fragment;
@@ -54,7 +56,7 @@ public class AppUpdaterDialog extends DialogFragment {
 
         appUpdaterDialogBinding =
                 DataBindingUtil.inflate(inflater, R.layout.app_updater_dialog, container, false);
-        appUpdaterDialogViewModel = new AppUpdaterDialogViewModel(activity);
+        appUpdaterDialogViewModel = new AppUpdaterDialogViewModel(activity, appUpdaterDialogBinding);
         appUpdaterDialogViewModel.setListener(new AppUpdaterDialogViewModel.Listener() {
             @Override
             public void onClose() {
@@ -62,42 +64,20 @@ public class AppUpdaterDialog extends DialogFragment {
             }
         });
         appUpdaterDialogViewModel.setUpdateData(JsonUpdateData.parse(getArguments().getString("updateData")));
-        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(new AppUpdaterDialogSettings().parse(getArguments().getString("appUpdaterDialogSettings")));
         appUpdaterDialogBinding.setViewModel(appUpdaterDialogViewModel);
+        AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings()
+                .parse(getArguments().getString("appUpdaterDialogSettings"))
+                .setCustomHeaderView(customHeaderView);
+        appUpdaterDialogViewModel.setAppUpdaterDialogSettings(appUpdaterDialogSettings);
 
         UtilAnimation.setRotateInfinite(appUpdaterDialogBinding.headerContainer.imgLogo);
 
-        setThemeColor(getResources().getColor(R.color.colorPrimaryLight));
         setCancelable(false);
 
         return appUpdaterDialogBinding.getRoot();
-    }
-
-    AppUpdaterDialog setThemeColor(int colorResource) {
-        if (null != appUpdaterDialogBinding) {
-            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgLogo.getBackground()).setColor(colorResource);
-            ((GradientDrawable) appUpdaterDialogBinding.headerContainer.bgHeader.getBackground()).setColor(colorResource);
-            ((GradientDrawable) appUpdaterDialogBinding.imgUpdate.getBackground()).setColor(colorResource);
-            LayerDrawable progressBarDrawable = (LayerDrawable) appUpdaterDialogBinding.progressBar.getProgressDrawable();
-            progressBarDrawable.setColorFilter(colorResource, PorterDuff.Mode.SRC_IN);
-        }
-        return this;
-    }
-
-    AppUpdaterDialog setThemeColor(String themeColor) {
-        int color = getResources().getColor(R.color.colorPrimaryLight);
-        try {
-            color = Color.parseColor(themeColor);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        setThemeColor(color);
-        return this;
     }
 
     public void show() {
         show(activity.getFragmentManager(), "appUpdater");
     }
 }
-
-//            setThemeColor(activity.getResources().getColor(R.color.colorPrimaryLight));

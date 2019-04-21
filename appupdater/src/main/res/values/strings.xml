@@ -14,4 +14,6 @@
     <string name="alert_write_permission">We need the authorization on your device.\nChange the setting at System Settings and try again.</string>
     <string name="alert_download_error">Download error!</string>
     <!--<string name="alert_download_error">Download error !\nPlease click \"Download App\"</string>-->
+
+    <string name="hint_open_browser">open browser to download APK</string>
 </resources>
