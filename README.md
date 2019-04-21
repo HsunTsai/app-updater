@@ -101,15 +101,17 @@ dependencies {
 public void checkVersion(){
     AppUpdaterDialogSettings appUpdaterDialogSettings = new AppUpdaterDialogSettings();
     appUpdaterDialogSettings
-        .setDownloadText("open browser to download APK")
-        .setUpdateText("Upgrade");
+        .setUpdateInfoTextResource(R.string.update_info_text) // auto replact ${version} to your new version
+        .setDownloadBtnTextResource(R.string.hint_open_browser) // default value => 'open browser to download APK'
+        .setUpdateBtnTextResource(R.string.common_update) // default value => 'Update'
+        .setDialogThemeColor("#0087DC"); // default value => '#4DB6AC'
 
     new AppUpdater(MainActivity.this)
+        .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
         .setUpdateParam("https://www.hsunserver.ga/download/updateData.json")
         //.setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.GET)
         //.setUpdateParam("https://www.hsunserver.ga/download/updateData.json", AppUpdater.RequestMethod.POST, data)
-        .setVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
-        .setLogShow(true)
+        //.setLogShow(true)
         .setDialogSettings(appUpdaterDialogSettings)
         .run();
 }
