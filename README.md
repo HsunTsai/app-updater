@@ -48,7 +48,7 @@ android {
     ...
 }
 dependencies {
-    implementation 'com.github.HsunTsai:app-updater:1.0.1'
+    implementation 'com.github.HsunTsai:app-updater:1.0.2'
 }
 ```
 
