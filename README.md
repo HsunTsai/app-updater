@@ -36,6 +36,7 @@
 ## Setup
 
 ### (1) Gradle (This lib use dataBinding, Plz add dataBinding enabled = true)
+[![](https://jitpack.io/v/HsunTsai/app-updater.svg)](https://jitpack.io/#HsunTsai/app-updater)
 ```groovy
 android {
     ...
